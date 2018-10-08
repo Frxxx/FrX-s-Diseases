@@ -58,14 +58,15 @@ function Ply:GetDisease()
 end
 
 hook.Add("Think", "FDiseases::Think", function()
-	if CurTime() > NewInfection + FDiseases.Config.InfectionInterval then
-		local randomply = table.Random(player.GetAll())
-		if !randomply:IsInfected() then
-			NewInfection = CurTime()
-			randomply:Infect(GetAutoInfection())
+	if player.GetCount() > 5 then
+		if CurTime() > NewInfection + FDiseases.Config.InfectionInterval then
+			local randomply = table.Random(player.GetAll())
+			if !randomply:IsInfected() && IsValid(randomply) then
+				NewInfection = CurTime()
+				randomply:Infect(GetAutoInfection())
+			end
 		end
 	end
-
 	for i, v in ipairs(player.GetAll()) do
 		if v:GetDisease() == "cold" then
 			if CurTime() > v.TemporaryTimer + FDiseases.Config.ColdInterval then -- temporary effects
