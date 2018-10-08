@@ -33,11 +33,11 @@ function Ply:Infect(disease)
 	self.TemporaryTimer2 = CurTime()
 	self.timer = CurTime()
 	if disease == "cold" then
-		self:ChatPrint("Zacząłeś się źle czuć. Przeszły cię dreszcze i zrobiło ci się zimno.")
+		self:ChatPrint("You don't feel very well, you feel cold.")
 	elseif disease == "flu" then
-		self:ChatPrint("Zacząłeś się bardzo źle czuć. Mocno się pocisz i boli cię gardło. To początek czegoś poważnego.")
+		self:ChatPrint("You feel sick, you began to sweat, you have headache.")
 	elseif disease == "tuberculosis" then
-		self:ChatPrint("")
+		self:ChatPrint("You fell really bad, you have a sore throat.")
 	end
 end
 
@@ -71,7 +71,7 @@ hook.Add("Think", "FDiseases::Think", function()
 			if CurTime() > v.TemporaryTimer + FDiseases.Config.ColdInterval then -- temporary effects
 				v.TemporaryTimer = CurTime()
 				v:EmitSound("ambient/voices/cough"..math.random(1, 4)..".wav")
-				v:ChatPrint("*Kaszlesz*")
+				v:ChatPrint("*You are coughing*")
 			end
 			if CurTime() > v.timer + FDiseases.Config.ColdUpTime then
 				v.timer = CurTime()
@@ -82,7 +82,7 @@ hook.Add("Think", "FDiseases::Think", function()
 			if CurTime() > v.TemporaryTimer + FDiseases.Config.FluInterval then
 				v.TemporaryTimer = CurTime()
 				v:EmitSound("ambient/voices/cough"..math.random(1, 4)..".wav")
-				v:ChatPrint("*Kaszlesz*")
+				v:ChatPrint("*You are coughing*")
 			end
 			if CurTime() > v.timer + FDiseases.Config.FluUpTime then
 				v.timer = CurTime()
@@ -95,13 +95,13 @@ hook.Add("Think", "FDiseases::Think", function()
 			if CurTime() > v.TemporaryTimer + FDiseases.Config.TuberculosisInterval then
 				v.TemporaryTimer = CurTime()
 				v:EmitSound("ambient/voices/cough"..math.random(1, 4)..".wav")
-				v:ChatPrint("*Kaszlesz i robi ci się duszno*")
+				v:ChatPrint("*You are coughing*")
 			end
 			if CurTime() > v.TemporaryTimer2 + FDiseases.Config.TuberculosisInterval2 then
 				v.TemporaryTimer2 = CurTime()
 				v:TakeDamage(20, v, nil)
 				v:EmitSound("ambient/voices/cough"..math.random(1, 4)..".wav")
-				v:ChatPrint("*Kaszlesz krwią*")
+				v:ChatPrint("*You are coughing up blood.*")
 			end
 			if CurTime() > v.timer + FDiseases.Config.TuberculosisUpTime then
 				v.timer = CurTime()
@@ -114,14 +114,14 @@ hook.Add("Think", "FDiseases::Think", function()
 end)
 
 local function InfectPlayer(ply, c, arg)
-	if !ply:IsAdmin() then ply:PrintMessage( HUD_PRINTCONSOLE, "[FrX's Diseases] Masz zbyt niską rangę żeby to zrobić.") return end
-	if !arg[1] or !arg[2] then ply:PrintMessage(HUD_PRINTCONSOLE, "[FrX's Diseases] Użycie: fdiseases_infect <gracz> <choroba>") return end
+	if !ply:IsAdmin() then ply:PrintMessage( HUD_PRINTCONSOLE, "[FrX's Diseases] Your rank is too low.") return end
+	if !arg[1] or !arg[2] then ply:PrintMessage(HUD_PRINTCONSOLE, "[FrX's Diseases] Usage: fdiseases_infect <ply> <disease>") return end
 
 	local found
 	for i, v in ipairs(player.GetAll()) do
 		if string.find(string.lower(v:GetName()), string.lower(arg[1])) then found = v break end
 	end
-	if !found then ply:PrintMessage(HUD_PRINTCONSOLE, "[FrX's Diseases] Nie udało się znaleźć takiego gracza na serwerze.") return end
+	if !found then ply:PrintMessage(HUD_PRINTCONSOLE, "[FrX's Diseases] Couldn't find this player.") return end
 
 	if !found:IsInfected() then
 		local exists = false
@@ -137,40 +137,40 @@ local function InfectPlayer(ply, c, arg)
 
 		if exists then
 			found:Infect(string.lower(arg[2]))
-			ply:PrintMessage(HUD_PRINTCONSOLE, "[FrX's Diseases] Udało ci się zainfekować tego gracza chorbą: "..string.lower(arg[2]))
+			ply:PrintMessage(HUD_PRINTCONSOLE, "[FrX's Diseases] You infected this player with: "..string.lower(arg[2]))
 		elseif !exists then
-			ply:PrintMessage(HUD_PRINTCONSOLE, "[FrX's Diseases] Taka choroba nie istnieje.")
+			ply:PrintMessage(HUD_PRINTCONSOLE, "[FrX's Diseases] This disease doesn't exist.")
 		end
 
 	elseif found:IsInfected() then
-		return ply:PrintMessage(HUD_PRINTCONSOLE, "[FrX's Diseases] Ten gracz jest już zarażony.")
+		return ply:PrintMessage(HUD_PRINTCONSOLE, "[FrX's Diseases] This player is already infected.")
 	end
 end
 concommand.Add("fdiseases_infect", InfectPlayer)
 
 local function CurePlayer(ply, c, arg)
-	if !ply:IsAdmin() then ply:PrintMessage( HUD_PRINTCONSOLE, "[FrX's Diseases] Masz zbyt niską rangę żeby to zrobić.") return end
-	if !arg[1] then ply:PrintMessage(HUD_PRINTCONSOLE, "[FrX's Diseases] Użycie: fdiseases_cure <gracz>") return end
+	if !ply:IsAdmin() then ply:PrintMessage( HUD_PRINTCONSOLE, "[FrX's Diseases] Your rank is too low.") return end
+	if !arg[1] then ply:PrintMessage(HUD_PRINTCONSOLE, "[FrX's Diseases] Usage: fdiseases_cure <ply>") return end
 
 	local found
 	for i, v in ipairs(player.GetAll()) do
 		if string.find(string.lower(v:GetName()), string.lower(arg[1])) then found = v break end
 	end
-	if !found then ply:PrintMessage(HUD_PRINTCONSOLE, "[FrX's Diseases] Nie udało się znaleźć takiego gracza na serwerze.") return end
+	if !found then ply:PrintMessage(HUD_PRINTCONSOLE, "[FrX's Diseases] Couldn't find this player.") return end
 
 	if found:IsInfected() then
 		found:Cure()
-		ply:PrintMessage(HUD_PRINTCONSOLE, "[FrX's Diseases] Udało ci się uleczyć tego gracza.")	
+		ply:PrintMessage(HUD_PRINTCONSOLE, "[FrX's Diseases] You have cured this player.")	
 	else
-		ply:PrintMessage(HUD_PRINTCONSOLE, "[FrX's Diseases] Ten gracz nie jest zarażony żadną chrobą.")
+		ply:PrintMessage(HUD_PRINTCONSOLE, "[FrX's Diseases] This player is not infected with any disease.")
 	end
 end
 concommand.Add("fdiseases_cure", CurePlayer)
 
 local function DiseasesList(ply, c)
-	ply:PrintMessage(HUD_PRINTCONSOLE,"[FrX's diseases] Lista chorób:")
+	ply:PrintMessage(HUD_PRINTCONSOLE,"[FrX's diseases] List of diseases:")
 	for i, v in ipairs(FDiseases.Registered) do
-		ply:PrintMessage(HUD_PRINTCONSOLE, v.." - ".."fdiseases_infect <gracz> "..v)
+		ply:PrintMessage(HUD_PRINTCONSOLE, v.." - ".."fdiseases_infect <ply> "..v)
 	end
 end
 concommand.Add("fdiseases_list", DiseasesList)
