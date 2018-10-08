@@ -1,20 +1,20 @@
--- Autor: FrX. Napisane od zera z dedykacją dla fulvous roleplay.
+-- Autor: FrX. Napisane z dedykacją dla Fulvous Roleplay. Author: FrX. Coded with dedication for Fulvous Roleplay.
 FDiseases = FDiseases or {}
 FDiseases.Config = FDiseases.Config or {}
 local config = FDiseases.Config
 
 -- config --
-config.InfectionInterval = 1800 -- Ilość czasu, po którym losowo wybrana osoba zostanie zarażona losowo wybraną chorobą.
-config.InfectionPercent = { -- Nie zmieniaj pierwszego elementu, drugi element to szansa procentowa na zarażenie po upływie czasu do automatycznego zarażenia (linijka wyżej)
-	{"cold", 75}, -- Nie zmeniaj stringa tylko liczbę.
-	{"flu", 15},
+config.InfectionInterval = 1800 -- Czasu, po którym losowo wybrana osoba zostanie zarażona losowo wybraną chorobą. Time before, which random player will be infected with random disease
+config.InfectionPercent = {
+	{"cold", 75}, -- drugi element to szansa procentowa na zarażenie się chorobą, skrypt losuje jednego gracza co czas ustawiony w zmiennej wyżej.
+	{"flu", 15}, -- second elemnt is chance of catching the diseases, the script is picking a random player, after the time set in Infection Interval.
 	{"tuberculosis", 10},
 	
 }
 
 -- Przeziębienie --
-config.ColdInterval = 60 -- Czas, po którym następują objawy stałe (np. kaszel.)
-config.ColdUpTime = 3600 -- czas, po którym choroba przechodzi sama.
+config.ColdInterval = 60 -- Czas, po którym następują objawy stałe (np. kaszel.). Interval for chronic symptoms.
+config.ColdUpTime = 3600 -- czas, po którym choroba przechodzi sama. Time, after which disease automatically wears off.
 
 -- grypa --
 config.FluInterval = 20
