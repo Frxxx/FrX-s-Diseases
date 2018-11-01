@@ -1,4 +1,4 @@
-local Ply = FindMetaTable("Player")
+local PLAYER = FindMetaTable("Player")
 local NewInfection = CurTime()
 FDiseases.Registered = {"cold", "flu", "tuberculosis"}
 
@@ -26,7 +26,7 @@ local function GetAutoInfection()
     return tostring(PickRandomNumber(FDiseases.Config.InfectionPercent))
 end 
 
-function Ply:Infect(disease)
+function PLAYER:Infect(disease)
 	self:SetNWBool("isInfected", true)
 	self:SetNWString("disease", disease)
 	self.TemporaryTimer = CurTime()
@@ -41,17 +41,17 @@ function Ply:Infect(disease)
 	end
 end
 
-function Ply:Cure()
+function PLAYER:Cure()
 	self:SetNWBool("isInfected", false)
 	self:SetNWString("disease", "")
 	self:PrintMessage(HUD_PRINTTALK, "Poczułeś się lepiej.")
 end
 
-function Ply:IsInfected()
+function PLAYER:IsInfected()
 	return self:GetNWBool("isInfected", false)
 end
 
-function Ply:GetDisease()
+function PLAYER:GetDisease()
 	if self:IsInfected() then
 		return self:GetNWString("disease")
 	end
