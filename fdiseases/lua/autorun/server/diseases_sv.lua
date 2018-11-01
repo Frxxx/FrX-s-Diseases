@@ -69,7 +69,7 @@ hook.Add("Think", "FDiseases::Think", function()
 	end
 	for i, v in ipairs(player.GetAll()) do
 		if v:GetDisease() == "cold" then
-			if CurTime() > v.TemporaryTimer + FDiseases.Config.ColdInterval then -- temporary effects
+			if CurTime() > v.TemporaryTimer + FDiseases.Config.ColdInterval then
 				v.TemporaryTimer = CurTime()
 				v:EmitSound("ambient/voices/cough"..math.random(1, 4)..".wav")
 				v:ChatPrint("*You are coughing*")
