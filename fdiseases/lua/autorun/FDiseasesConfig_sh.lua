@@ -24,3 +24,9 @@ config.FluUpTime = 3600
 config.TuberculosisInterval = 40
 config.TuberculosisInterval2 = 900
 config.TuberculosisUpTime = 2760
+
+
+-- temperatura --
+config.TemperatureChangeInterval = 900
+config.MaxTemperature = 10
+config.MinTemperature = -40
