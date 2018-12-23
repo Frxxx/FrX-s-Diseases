@@ -28,5 +28,5 @@ config.TuberculosisUpTime = 2760
 
 -- temperatura --
 config.TemperatureChangeInterval = 900
-config.MaxTemperature = 10
+config.MaxTemperature = 10	
 config.MinTemperature = -40

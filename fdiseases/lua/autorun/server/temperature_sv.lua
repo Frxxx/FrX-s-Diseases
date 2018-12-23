@@ -1,4 +1,3 @@
-local PLAYER = FindMetaTable("Player")
 FDiseases.Temperature = 0
 local TemperatureChange = CurTime()
 
@@ -10,16 +9,20 @@ hook.Add("Think", "Temperature::Think", function()
         else
             FDiseases.Temperature = FDiseases.Temperature - change
         end
+        SetGlobalInt("FDiseases.Temperature", FDiseases.Temperature)
         TemperatureChange = CurTime()
-        if player.GetCount() > 5 then
+        if player.GetCount() >= 1 then
             for _, ply in ipairs(player.GetAll()) do
-                ply:SetNWInt("FDiseases.Temperature", FDiseases.Temperature)
+                ply:SetNWInt("FDiseases.Temperature", FDiseases.Temperature + ply:GetNWInt("FDiseases.Clothing"))
             end
         end
-        print(FDiseases.Temperature)
-    end
+    end 
 end)
 
 hook.Add("PlayerSpawn", "Temperature::PlayerSpawn", function(ply)
-    ply:SetNWInt("FDiseases.Temperature", FDiseases.Temperature)
+    ply:SetNWInt("FDiseases.Temperature",FDiseases.Temperature)
+end)
+
+hook.Add("Initialize", "Temperature::Initialize", function()
+    SetGlobalInt("FDiseases.Temperature", FDiseases.Temperature)
 end)
