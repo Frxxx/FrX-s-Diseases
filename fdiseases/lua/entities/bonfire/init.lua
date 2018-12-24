@@ -54,3 +54,7 @@ function ENT:Use(_, caller)
 		self:Extinguish()
 	end
 end
+
+function ENT:OnRemove()
+	self:Extinguish()
+end
