@@ -19,7 +19,7 @@ function ENT:Draw()
     end
 end
 
-hook.Add("HUDPaint", "Radiator::Think", function()
+hook.Add("HUDPaint", "Bonfire::HUDPaint", function()
     local tr = LocalPlayer():GetEyeTrace()
 
     if tr.Entity:GetClass() == "bonfire" then
@@ -27,14 +27,14 @@ hook.Add("HUDPaint", "Radiator::Think", function()
     end
 end)
 
-hook.Add("PhysgunPickup", "Radiator::PhysgunPickup", function(_, ent)
-    if ent:GetClass() == "radiator" then
+hook.Add("PhysgunPickup", "Bonfire::PhysgunPickup", function(_, ent)
+    if ent:GetClass() == "bonfire" then
         isPicked = true
     end
 end)
 
-hook.Add("PhysgunDrop", "Radiator::PhysgunDrop", function(_, ent)
-    if ent:GetClass() == "radiator" then
+hook.Add("PhysgunDrop", "Bonfire::PhysgunDrop", function(_, ent)
+    if ent:GetClass() == "bonfire" then
         isPicked = false
     end
 end)
