@@ -34,11 +34,13 @@ function PLAYER:Infect(disease)
 	self.TemporaryTimer2 = CurTime()
 	self.timer = CurTime()
 	if disease == "cold" then
-		self:ChatPrint("Zacząłeś się źle czuć. Przeszły cię dreszcze i zrobiło ci się zimno.")
+		self:ChatPrint("*Zacząłeś się źle czuć. Przeszły cię dreszcze i zrobiło ci się zimno.*")
 	elseif disease == "flu" then
-		self:ChatPrint("Zacząłeś się bardzo źle czuć. Mocno się pocisz i boli cię gardło. To początek czegoś poważnego.")
+		self:ChatPrint("*Zacząłeś się bardzo źle czuć. Mocno się pocisz i boli cię gardło. To początek czegoś poważnego.*")
 	elseif disease == "tuberculosis" then
-		self:ChatPrint("You fell really bad, you have a sore throat.")
+		self:ChatPrint("*Czujesz się bardzo źle, boli cię gardło.*")
+	elseif diseases == "hypotermia" then
+		self:ChatPrint("*Trzęsiesz się z zimna, przechodzą cię dreszcze, twoja skóra zrobiła się sina.*")
 	end
 end
 
@@ -71,8 +73,7 @@ hook.Add("Think", "FDiseases::Think", function()
 			ply:Infect(GetAutoInfection())
 			NewInfection = CurTime()
 		end 
-	end
-	
+	end	
 	for _, v in ipairs(player.GetAll()) do
 		if v:GetDisease() == "cold" then
 			if CurTime() > v.TemporaryTimer + FDiseases.Config.ColdInterval then
@@ -117,7 +118,47 @@ hook.Add("Think", "FDiseases::Think", function()
 				v:SetNWString("disease", "")
 			end
 		end
+
+		if v:GetNWInt("FDiseases.Temperature") <= -20 then
+			if !v.hasHypotermia then
+				timer.Create("FDiseases::Hypotermia", 120, 1, function()
+					if v:GetNWInt("FDiseases.Temperature") <= -20 then
+						v:Infect("hypotermia")
+					end
+				end)
+				v.hasHypotermia = true
+			end
+		end
+		
+		if v:GetDisease() == "hypotermia" then
+			if CurTime() > v.TemporaryTimer + 120 then
+				v:TakeDamage(25, v, nil)
+				v:SetWalkSpeed(v:GetWalkSpeed() - 20)
+				v:SetRunSpeed(v:GetRunSpeed() - 40)
+				v.TemporaryTimer = CurTime()
+			end
+			if CurTime() > v.TemporaryTimer2 + 400 then
+				v:Kill()
+				v:SetNWBool("isInfected", false)
+				v:SetNWString("disease", "")
+				v:SetWalkSpeed(v:GetWalkSpeed() + 60)
+				v:SetRunSpeed(v:GetRunSpeed() + 120)
+				v.TemporaryTimer2 = CurTime()
+			end
+			if v:GetNWInt("FDiseases.Temperature") > 10 then 
+				if CurTime() + v.timer + 30 then
+					v:Cure()
+					v:SetWalkSpeed(v:GetWalkSpeed() + 60)
+					v:SetWalkSpeed(v:GetWalkSpeed() + 120)
+					v.timer = CurTime()
+				end
+			end
+		end
 	end
+end)
+
+hook.Add("PlayerSpawn", "FDiseases::PlayerSpawn", function(ply)
+	ply.hasHypotermia = false
 end)
 
 local function InfectPlayer(ply, c, arg)
