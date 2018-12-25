@@ -26,3 +26,14 @@ end)
 hook.Add("Initialize", "Temperature::Initialize", function()
     SetGlobalInt("FDiseases.Temperature", FDiseases.Temperature)
 end)
+
+local function SetTemperature(ply, c, arg)
+    if !ply:IsAdmin() then ply:PrintMessage( HUD_PRINTCONSOLE, "[FrX's Diseases] Masz zbyt niską rangę żeby to zrobić.") return end
+    if !arg[1] then ply:PrintMessage(HUD_PRINTCONSOLE, "[FrX's Diseases] Użycie: fdiseases_settemperature <temperatura>") return end
+    FDiseases.Temperature = tonumber(arg[1])
+    SetGlobalInt("FDiseases.Temperature", tonumber(arg[1]))
+    for _, v in ipairs(player.GetAll()) do
+        v:SetNWInt("FDiseases.Temperature", FDiseases.Temperature + ply:GetNWInt("FDiseases.Clothing"))
+    end
+end
+concommand.Add("fdiseases_settemperature", SetTemperature)

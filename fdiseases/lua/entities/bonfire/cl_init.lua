@@ -23,7 +23,7 @@ hook.Add("HUDPaint", "Bonfire::HUDPaint", function()
     local tr = LocalPlayer():GetEyeTrace()
 
     if tr.Entity:GetClass() == "bonfire" then
-        draw.SimpleText("Wciśnij 'E' żeby zapalić/zgasić ognisko.", "FDiseases.Font3", ScrW()/2- surface.GetTextSize("Wciśnij 'E' żeby zapalić/zgasić ognisko.")/2, ScrH() * 0.6, Color(255, 0, 0))
+        draw.SimpleText("Wciśnij 'E' żeby zapalić/zgasić ognisko.", "FDiseases.Font3", ScrW() * 0.41, ScrH() * 0.9, Color(255, 0, 0))
     end
 end)
 
