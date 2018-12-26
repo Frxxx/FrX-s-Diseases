@@ -149,7 +149,7 @@ hook.Add("Think", "FDiseases::Think", function()
 	for _, v in ipairs(player.GetAll()) do
 		if v:GetNWInt("FDiseases.Temperature") <= -20 then
 			if !v.hasHypotermia then
-				timer.Create("FDiseases::Hypotermia", 120, 1, function()
+				timer.Create("FDiseases::Hypotermia", 120, 0, function()
 					if v:GetNWInt("FDiseases.Temperature") <= -20 then
 						v:Infect("hypotermia")
 					end

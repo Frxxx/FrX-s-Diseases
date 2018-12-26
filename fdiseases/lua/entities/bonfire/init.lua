@@ -1,7 +1,7 @@
 AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 include('shared.lua')
-local TemperatureAdd = 60
+local TemperatureAdd = 30
 local TemperatureAddCurtime = CurTime()
 local TemperatureDrop = 20
 local TemperatureDropCurtime = CurTime()
@@ -28,8 +28,8 @@ function ENT:Think()
 	if CurTime() > TemperatureAddCurtime + TemperatureAdd then
 		for _, v in ipairs(ents.FindInSphere(self:LocalToWorld(Vector(0,0,6)), 110)) do
 			if v:IsPlayer() && isBurning && v.temperature < 30 then
-				v.temperature = v.temperature  + 0.5 
-				v:SetNWInt("FDiseases.Temperature", v:GetNWInt("FDiseases.Temperature") + 0.5)				
+				v.temperature = v.temperature  + 1.5 
+				v:SetNWInt("FDiseases.Temperature", v:GetNWInt("FDiseases.Temperature") + 1.5)				
 			end
 		end
 		TemperatureAddCurtime = CurTime()
@@ -37,8 +37,8 @@ function ENT:Think()
 	for _, ply in ipairs(player.GetAll()) do
 		if CurTime() > TemperatureDropCurtime + TemperatureDrop then
 			if !table.HasValue(ents.FindInSphere(self:LocalToWorld(Vector(0,0,6)), 110), ply) || !isBurning && ply.temperature > 0 then
-				ply:SetNWInt("FDiseases.Temperature", ply:GetNWInt("FDiseases.Temperature") - 0.5)
-				ply.temperature = ply.temperature - 0.5
+				ply:SetNWInt("FDiseases.Temperature", ply:GetNWInt("FDiseases.Temperature") - 1.5)
+				ply.temperature = ply.temperature - 1.5
 			end
 			TemperatureDropCurtime = CurTime()
 		end
