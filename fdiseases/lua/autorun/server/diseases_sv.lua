@@ -122,7 +122,8 @@ local function Hypotermia(ply)
 		ply.TemporaryTimer2 = CurTime()
 	end 
 	if ply:GetNWInt("FDiseases.Temperature") > 10 then 
-		if CurTime() + ply.timer + 1 then
+		if CurTime() + ply.timer + 45 then
+			ply.hasHypotermia = false
 			ply:Cure()
 			ply:SetWalkSpeed(ply:GetWalkSpeed() + 60)
 			ply:SetWalkSpeed(ply:GetWalkSpeed() + 120)
@@ -170,6 +171,12 @@ end)
 
 hook.Add("PlayerSpawn", "FDiseases::PlayerSpawn", function(ply)
 	ply.hasHypotermia = false
+end)
+
+hook.Add("PlayerDeath", "FDiseases::PlayerDeath", function(ply)
+	ply.hasHypotermia = false
+	ply:SetNWBool("isInfected", false)
+	ply:SetNWString("disease", "")
 end)
 
 local function InfectPlayer(ply, c, arg)
